@@ -1,38 +1,230 @@
-.App {
-  text-align: center;
+body {
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+}
+  
+html {
+    height: -webkit-fill-available;
+}
+  
+main {
+    display: flex;
+    flex-wrap: nowrap;
+    height: 100vh;
+    height: -webkit-fill-available;
+    max-height: 100vh;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+  
+.b-example-divider {
+    flex-shrink: 0;
+    width: 1.5rem;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, .1);
+    border: solid rgba(0, 0, 0, .15);
+    border-width: 1px 0;
+    box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+}
+  
+.bi {
+    vertical-align: -.125em;
+    pointer-events: none;
+    fill: currentColor;
+}
+  
+.dropdown-toggle { outline: 0; }
+  
+.nav-flush .nav-link {
+    border-radius: 0;
+}
+  
+.btn-toggle {
+    display: inline-flex;
+    align-items: center;
+    padding: .25rem .5rem;
+    font-weight: 600;
+    color: rgba(0, 0, 0, .65);
+    background-color: transparent;
+    border: 0;
+}
+.btn-toggle:hover,
+.btn-toggle:focus {
+    color: rgba(0, 0, 0, .85);
+    background-color: #d2f4ea;
+}
+  
+.btn-toggle::before {
+    width: 1.25em;
+    line-height: 0;
+    content: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='rgba%280,0,0,.5%29' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 14l6-6-6-6'/%3e%3c/svg%3e");
+    transition: transform .35s ease;
+    transform-origin: .5em 50%;
+}
+  
+.btn-toggle[aria-expanded="true"] {
+    color: rgba(0, 0, 0, .85);
+}
+.btn-toggle[aria-expanded="true"]::before {
+    transform: rotate(90deg);
+}
+  
+.btn-toggle-nav a {
+    display: inline-flex;
+    padding: .1875rem .5rem;
+    margin-top: .125rem;
+    margin-left: 1.25rem;
+    text-decoration: none;
+}
+.btn-toggle-nav a:hover,
+.btn-toggle-nav a:focus {
+    background-color: #d2f4ea;
+}
+  
+.scrollarea {
+    overflow-y: auto;
+}
+  
+.fw-semibold { font-weight: 600; }
+.lh-tight { line-height: 1.25; }
+
+.dropdown {
+    padding: 11px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+
+
+
+
+.sidebar-header-text {
+    font-size: small;
+    letter-spacing: 2px;
+    color: #777;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.unselectable {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.sidebar .nav-link {
+    color: #777;
+    cursor: default;
 }
 
-.App-link {
-  color: #61dafb;
+.sidebar .nav-link:hover {
+    color: #fff;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.sidebar hr {
+    color: #fff;
+}
+
+.sidebar .nav-link.active {
+    color: #fff;
+    border-left: 3px solid #80ff80;
+}
+
+.normalAlignement {
+    align-self: flex-start;
+}
+
+.card {
+    background-color: #212326!important;
+    width: 250px!important;
+}
+
+.card .header {
+    color:#fff!important;
+}
+
+.card .meta {
+    color:#999!important;
+}
+
+
+.card .extra.content {
+    align-self: center;
+}
+
+.card .btn {
+    font-size: 20px;
+    color:#fff!important;
+}
+
+.searchBar {
+    padding: 15px;
+}
+
+.searchBar ::placeholder {
+    color: #778692!important;
+}
+
+.player {
+    width: calc(100% - 280px);
+    margin-left: 280px;
+    height: 100px;
+    background-color: #343a40;
+    align-self: flex-end;
+}
+.music-page {
+    width: calc(100% - 280px);
+    height: calc(100% - 100px);
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.music-page-section {
+    padding: 15px;
+    overflow-x: auto;
+}
+
+.music-page-section .ui.cards {
+    flex-wrap: nowrap;
+    display:inline-flex;
+}
+
+/* width */
+.music-page::-webkit-scrollbar {
+    width: 15px;
+}
+
+/* Track */
+.music-page::-webkit-scrollbar-track {
+    background: #212529;
+}
+
+/* Handle */
+.music-page::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 0px;
+}
+
+/* Handle on hover */
+.music-page::-webkit-scrollbar-thumb:hover {
+    background: #888;
+}
+
+/* width */
+.music-page-section::-webkit-scrollbar {
+    width: 15px;
+}
+
+/* Track */
+.music-page-section::-webkit-scrollbar-track {
+    background: #212529;
+}
+
+/* Handle */
+.music-page-section::-webkit-scrollbar-thumb {
+    background: #555;
+}
+
+/* Handle on hover */
+.music-page-section::-webkit-scrollbar-thumb:hover {
+    background: #888;
 }
