@@ -126,7 +126,7 @@ main {
 
 .sidebar .nav-link.active {
     color: #fff;
-    border-left: 3px solid #80ff80;
+    border-left: 3px solid #1cb854;
 }
 
 .normalAlignement {
@@ -136,6 +136,8 @@ main {
 .card {
     background-color: #212326!important;
     width: 250px!important;
+    box-shadow: none!important;
+    -webkit-box-shadow: none!important;
 }
 
 .card .header {
@@ -144,8 +146,10 @@ main {
 
 .card .meta {
     color:#999!important;
+    overflow: hidden;
+    max-height: 65px;
+    text-overflow: ellipsis;
 }
-
 
 .card .extra.content {
     align-self: center;
@@ -171,6 +175,68 @@ main {
     background-color: #343a40;
     align-self: flex-end;
 }
+
+.player-image {
+    width: 80px;
+    height: 80px;
+    margin: 10px;
+}
+
+.player-titre {
+    cursor: pointer;
+}
+
+.player-titre:hover {
+    text-decoration: underline;
+    text-underline-position: under
+}
+
+.player-artiste {
+    color: #999;
+    cursor: pointer;
+}
+
+.player-artiste:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+
+.player-time {
+    color:#bbb;
+    font-size: 11px;
+}
+
+.player-song-icons {
+    margin-top: 30px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.player-usable-icon {
+    color: #bbb;
+}
+
+.player-usable-icon:hover {
+    color: #fff;
+}
+
+.player-play-icon {
+    font-size: 30px;
+}
+
+.progress {
+    background-color: #212529;
+    height: 5px;
+    margin: auto;
+    padding: 0px;
+}
+
+.login-page {
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+}
+
 .music-page {
     width: calc(100% - 280px);
     height: calc(100% - 100px);
@@ -183,9 +249,22 @@ main {
     overflow-x: auto;
 }
 
+.row.row-cols-2 {
+    padding: 20px;
+}
+
 .music-page-section .ui.cards {
     flex-wrap: nowrap;
     display:inline-flex;
+}
+
+.music-page-section .title {
+    font-size: large;
+    font-weight: 700;
+}
+
+.music-page-section .description {
+    color: #bbb;
 }
 
 /* width */
@@ -227,4 +306,197 @@ main {
 /* Handle on hover */
 .music-page-section::-webkit-scrollbar-thumb:hover {
     background: #888;
+}
+
+.login-form {
+    margin-top: 250px;
+}
+
+.login-logo {
+    text-align: center;
+    font-size: 40px!important;
+    font-weight: 600;
+    padding-top: 30px;
+    padding-bottom: 15px;
+}
+
+.login-input {
+    height: 50px;
+}
+
+.login-form-label {
+    font-weight: 700;
+    text-align: left!important;
+}
+
+.divBtn {
+    text-align: center!important;
+}
+
+button.green-button {
+    height: 35px;
+    
+    background-color: #1cb854;
+    border-radius: 50px;
+
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: bolder;
+    color: rgb(255, 255, 255);
+}
+
+button.green-button-big {
+    height: 50px;
+    
+    background-color: #1cb854;
+    border-radius: 50px;
+
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-size: 13px;
+    font-weight: bolder;
+    color: black;
+}
+
+button.cancel-btn {
+    height: 50px;
+    
+    background-color: #0b0c0e;
+    border-radius: 50px;
+    border-color: #fff;
+
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-size: 13px;
+    font-weight: bolder;
+    color: rgb(255, 255, 255);
+}
+button.cancel-btn:hover {
+    color: #fff;
+}
+
+input[type='range'] {
+    overflow: hidden;
+    width: 100%;
+    -webkit-appearance: none;
+    background-color: #212529;
+    border-radius: 15px;
+    margin-top: -2px;
+}
+
+input[type='range']::-webkit-slider-runnable-track {
+    height: 5px;
+    -webkit-appearance: none;
+    color: #bbb;
+}
+
+input[type='range']::-webkit-slider-thumb {
+    width: 5px;
+    -webkit-appearance: none;
+    height: 10px;
+    background: #1cb854;
+    box-shadow: -700px 0 0 700px #889599;
+}
+
+.player-range {
+    vertical-align: middle!important;
+}
+
+.player-sound {
+    margin-top: 30px;
+}
+
+.creaPlaylist-txtarea {
+    resize: none;
+}
+
+.noSection {
+    padding: 15px;
+}
+
+.card.artiste {
+    text-align: center;
+    box-shadow: none!important;
+    -webkit-box-shadow: none!important;
+    border-top-left-radius: 125px!important;
+    border-top-right-radius: 125px!important;
+}
+
+.card.artiste .image img {
+    border-radius: 500px!important;
+}
+
+.table {
+    color: #fff;
+    border-collapse: separate;
+    padding: 0px;
+}
+
+table tr, th, td {
+    border-bottom-width: 1px;
+    border-bottom-color: #555;
+}
+
+table td {
+    vertical-align: text-top;
+}
+
+h1 {
+    font-size: 40px;
+}
+
+.playlist-logo {
+    height: 250px;
+    width: 250px;
+}
+
+.album-logo-small {
+    height: 150px;
+    width: 150px;
+    padding: 0;
+    margin-left: 15px;
+}
+
+.album-like {
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.album-section {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.playlist-titre {
+    font-weight: bold;
+    font-size: 40px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.playlist-description {
+    color: #bbb;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.playlist-details {
+    color: #bbb;
+}
+
+.playlist-createur {
+    display: inline-block;
+    color: #fff;
+}
+
+.playlist-createur:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.modal-content {
+    background-color: #212529;
+    color: #fff;
 }
