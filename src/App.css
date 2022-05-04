@@ -92,10 +92,6 @@ main {
     padding: 11px;
 }
 
-
-
-
-
 .sidebar-header-text {
     font-size: small;
     letter-spacing: 2px;
@@ -134,10 +130,13 @@ main {
 }
 
 .card {
-    background-color: #212326!important;
     width: 250px!important;
+    background-color: #212529!important;
+    text-align: center;
     box-shadow: none!important;
     -webkit-box-shadow: none!important;
+    border-top-left-radius: 125px!important;
+    border-top-right-radius: 125px!important;
 }
 
 .card .header {
@@ -160,6 +159,20 @@ main {
     color:#fff!important;
 }
 
+.card.artiste {
+    background-color: transparent!important;
+}
+
+.ui.cards>.card>:first-child {
+    border-radius: 500px!important;
+}
+.card .image img {
+    object-fit: cover;
+    max-width: 250px;
+    max-height: 250px;
+    border-radius: 500px!important;
+}
+
 .searchBar {
     padding: 15px;
 }
@@ -174,42 +187,39 @@ main {
     height: 100px;
     background-color: #343a40;
     align-self: flex-end;
+    position: fixed;
 }
 
-.player-image {
-    width: 80px;
-    height: 80px;
-    margin: 10px;
+.PlayerRSWP {
+    height: 100px;
+    background-color: #343a40!important;
 }
 
-.player-titre {
-    cursor: pointer;
+.PlayerRSWP button {
+    margin-top: 40px!important;
 }
 
-.player-titre:hover {
-    text-decoration: underline;
-    text-underline-position: under
+/* Texte trackname et trackartist */
+.PlayerRSWP .__nnvdcq {
+    margin-top: 20px!important;
 }
 
-.player-artiste {
-    color: #999;
-    cursor: pointer;
+/* Box de l'image de la musique */
+.PlayerRSWP ._InfoRSWP a{
+    height: 20px!important;
 }
 
-.player-artiste:hover {
-    color: #fff;
-    text-decoration: underline;
+/* Image de la musique */
+.PlayerRSWP img{
+    width: 80px!important;
+    height: 80px!important;
+    margin: 10px!important;
+    margin-top: -5px!important;
 }
 
-.player-time {
-    color:#bbb;
-    font-size: 11px;
-}
-
-.player-song-icons {
-    margin-top: 30px;
-    margin-bottom: 10px;
-    text-align: center;
+/* Bouton devices */
+.PlayerRSWP ._DevicesRSWP {
+    display: none;
 }
 
 .player-usable-icon {
@@ -218,17 +228,6 @@ main {
 
 .player-usable-icon:hover {
     color: #fff;
-}
-
-.player-play-icon {
-    font-size: 30px;
-}
-
-.progress {
-    background-color: #212529;
-    height: 5px;
-    margin: auto;
-    padding: 0px;
 }
 
 .login-page {
@@ -244,27 +243,24 @@ main {
     overflow-x: hidden;
 }
 
-.music-page-section {
-    padding: 15px;
-    overflow-x: auto;
+.no-premium-page {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    text-align: center;
+}
+
+.no-premium-page .message-ctnr {
+    margin-top: 15%;
+}
+
+.no-premium-page .message-ctnr a {
+    margin-top: 20px;
 }
 
 .row.row-cols-2 {
     padding: 20px;
-}
-
-.music-page-section .ui.cards {
-    flex-wrap: nowrap;
-    display:inline-flex;
-}
-
-.music-page-section .title {
-    font-size: large;
-    font-weight: 700;
-}
-
-.music-page-section .description {
-    color: #bbb;
 }
 
 /* width */
@@ -285,26 +281,6 @@ main {
 
 /* Handle on hover */
 .music-page::-webkit-scrollbar-thumb:hover {
-    background: #888;
-}
-
-/* width */
-.music-page-section::-webkit-scrollbar {
-    width: 15px;
-}
-
-/* Track */
-.music-page-section::-webkit-scrollbar-track {
-    background: #212529;
-}
-
-/* Handle */
-.music-page-section::-webkit-scrollbar-thumb {
-    background: #555;
-}
-
-/* Handle on hover */
-.music-page-section::-webkit-scrollbar-thumb:hover {
     background: #888;
 }
 
@@ -331,26 +307,15 @@ main {
 
 .divBtn {
     text-align: center!important;
-}
-
-button.green-button {
-    height: 35px;
-    
-    background-color: #1cb854;
-    border-radius: 50px;
-
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    font-size: 12px;
-    font-weight: bolder;
-    color: rgb(255, 255, 255);
+    justify-content: center;
 }
 
 button.green-button-big {
-    height: 50px;
+    height: 40px;
     
     background-color: #1cb854;
-    border-radius: 50px;
+    border-radius: 20px;
+    border-color: #000;
 
     letter-spacing: 2px;
     text-transform: uppercase;
@@ -360,51 +325,17 @@ button.green-button-big {
 }
 
 button.cancel-btn {
-    height: 50px;
+    height: 40px;
     
     background-color: #0b0c0e;
-    border-radius: 50px;
-    border-color: #fff;
+    border-radius: 20px;
+    border-color: #000;
 
     letter-spacing: 2px;
     text-transform: uppercase;
     font-size: 13px;
     font-weight: bolder;
     color: rgb(255, 255, 255);
-}
-button.cancel-btn:hover {
-    color: #fff;
-}
-
-input[type='range'] {
-    overflow: hidden;
-    width: 100%;
-    -webkit-appearance: none;
-    background-color: #212529;
-    border-radius: 15px;
-    margin-top: -2px;
-}
-
-input[type='range']::-webkit-slider-runnable-track {
-    height: 5px;
-    -webkit-appearance: none;
-    color: #bbb;
-}
-
-input[type='range']::-webkit-slider-thumb {
-    width: 5px;
-    -webkit-appearance: none;
-    height: 10px;
-    background: #1cb854;
-    box-shadow: -700px 0 0 700px #889599;
-}
-
-.player-range {
-    vertical-align: middle!important;
-}
-
-.player-sound {
-    margin-top: 30px;
 }
 
 .creaPlaylist-txtarea {
@@ -413,18 +344,6 @@ input[type='range']::-webkit-slider-thumb {
 
 .noSection {
     padding: 15px;
-}
-
-.card.artiste {
-    text-align: center;
-    box-shadow: none!important;
-    -webkit-box-shadow: none!important;
-    border-top-left-radius: 125px!important;
-    border-top-right-radius: 125px!important;
-}
-
-.card.artiste .image img {
-    border-radius: 500px!important;
 }
 
 .table {
@@ -458,17 +377,6 @@ h1 {
     margin-left: 15px;
 }
 
-.album-like {
-    color: #fff;
-    font-size: 20px;
-    cursor: pointer;
-}
-
-.album-section {
-    padding-top: 15px;
-    padding-bottom: 15px;
-}
-
 .playlist-titre {
     font-weight: bold;
     font-size: 40px;
@@ -480,6 +388,7 @@ h1 {
     color: #bbb;
     margin-top: 10px;
     margin-bottom: 10px;
+    overflow-wrap: break-word!important;
 }
 
 .playlist-details {
@@ -491,12 +400,50 @@ h1 {
     color: #fff;
 }
 
-.playlist-createur:hover {
-    text-decoration: underline;
-    cursor: pointer;
-}
-
 .modal-content {
     background-color: #212529;
     color: #fff;
+}
+
+.small-album-image img {
+    max-width: 40px;
+    max-height: 40px;
+}
+
+.accueil {
+    margin-top: 10%;
+    text-align: center;
+}
+
+.accueil i {
+    font-size: 150px;
+    color: rgb(28, 184, 84);
+}
+
+.accueil h1 {
+    font-size: 50px;
+    font-weight: 700;
+}
+
+.accueil p {
+    font-size: 20px;
+    font-weight: 400;
+    color: #999;
+}
+
+.delete-playlist-btn {
+    color: #777!important;
+    display: none;
+}
+
+.delete-playlist-btn:hover {
+    color: #fff!important;
+}
+
+.sidebar li:hover .delete-playlist-btn {
+    display: block!important;
+}
+
+.dropdown-toggle::after {
+    display: none;
 }

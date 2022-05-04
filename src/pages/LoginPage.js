@@ -1,7 +1,25 @@
-import React from 'react';
+/**
+ * Fonction qui affiche la page de connexion
+ * 
+ * @param  {} {credentials}
+ */
+export const LoginPage = ({credentials}) => {
 
-export const LoginPage = ({setLogin}) => {
+    //Préparation de l'url d'authentification
+    let endpoint = 'https://accounts.spotify.com/authorize';
+    let redirect_uri = 'http://localhost:3000/'
+    let scopes = [
+        'user-read-currently-playing',
+        'user-read-recently-played',
+        'user-read-playback-state',
+        'user-top-read',
+        'user-modify-playback-state',
+        'playlist-modify-public'
+    ]
 
+    let authUrl = endpoint + '?client_id=' + credentials.id + '&redirect_uri=' + redirect_uri + '&scope=' + scopes.join('%20') + '&response_type=token&show_dialog=true';
+
+    //Affichage de la page
     return (
         <main className='unselectable' style={{height: window.screen.height}}>
             <div className='login-page text-white bg-dark bg-gradient'>
@@ -11,7 +29,7 @@ export const LoginPage = ({setLogin}) => {
                 <div className='row justify-content-md-center'>
                     <div className='col-md-3 login-form'>
                         <div className='divBtn'>
-                            <button type="button" className="green-button-big btn btn-success" onClick={() => {setLogin(true)}}>Se connecter avec Spotify</button>
+                            <a href={authUrl} className="green-button-big btn btn-success">Se connecter avec Spotify</a>
                         </div>
                     </div>
                 </div>

@@ -1,9 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Modal } from 'react-bootstrap';
-import { Albums } from './components/Albums';
-import { Artiste } from './components/Artiste';
+import { useDispatch } from 'react-redux';
+import { fetchMyRecentlyPlayed, fetchMyTopArtists, fetchMyTopTracks, fetchPlaylist, fetchPlaylists, fetchPlaylistTracks, fetchSearchResults, fetchUser, setAccessToken } from '../app/slices/spotifySlice';
 import { Artistes } from './components/Artistes';
-import { ConcuPourVous } from './components/ConcuPourVous';
 import { EcouteRecemment } from './components/EcouteRecemment';
 import { Home } from './components/Home';
 import { Player } from './components/Player';
@@ -11,43 +9,106 @@ import { Playlist } from './components/Playlist';
 import { Recherche } from './components/Recherche';
 import { Sidebar } from './components/Sidebar';
 import { Titres } from './components/Titres';
+import { cloneDeep } from 'lodash';
+import { PlaylistModal } from './components/modals/PlaylistModal';
+import { ErreurModal } from './components/modals/ErreurModal';
+import { NoPremium } from './components/NoPremium';
+/**
+ * Fonction qui gère l'affichage des différents composants
+ * 
+ * @param  {} {setLogin
+ * @param  {} accessTokenDirect}
+ */
+export const MainPage = ({setLogin, accessTokenDirect}) => {
 
-export const MainPage = () => {
-
-    //Ajouter playlists dans la variable
-    const [modalShow, setModalShow] = useState(false);
-    const [recherche, setRecherche] = useState('');
+    //Déclaration des variables
+    const dispatch = useDispatch();
+    const [playlistModalShow, setPlaylistModalShow] = useState(false);
+    const [erreurModalShow, setErreurModalShow] = useState(false);
     const [sidebarOptions, setSidebarOptions] = useState({
         accueil: 'active',
         concuPourVous: '',
         ecouteRecemment: '',
         titres: '',
-        albums: '',
         artistes: '',
         artiste: '',
         playlists: []
     });
 
-    const [playlists, setPlaylists] = useState([{titre: 'Titres', description: 'desctitres', createur: 'Chultos', nbTitres: '46', duree: '4 hr 6 min'},
-                                                {titre: 'playlist', description: 'descplaylist', createur: 'Jean', nbTitres: '22', duree: '2 hr 4 min'}]);
+    //Variables API
+    const [user, setUser] = useState();
+    const [playlists, setPlaylists] = useState({items: [{name: ''}]});
+    const [recherche, setRecherche] = useState('');
+    const [resultatsRecherche, setResultatsRecherche] = useState();
+    const [lastRecherche, setLastRecherche] = useState('');
+
+    const [ecouteRecemment, setEcouteRecemment] = useState();
+    const [titres, setTitres] = useState();
+    const [artistes, setArtistes] = useState();
+    const [playlist, setPlaylist] = useState();
+    const [lastFetchedPlaylist, setLastFetchedPlaylist] = useState('');
+    const [currentTrackUri, setCurrentTrackUri] = useState();
     
+    //Variable pour mettre à jour des components manuellement
+    const [updateOnChange, setUpdateOnChange] = useState(false);
+
+
+    //Récupération des données de l'utilisateur
+    useEffect(() => {
+        const getBasicData = async() => {
+            const playlistsRequete = await dispatch(fetchPlaylists());
+
+            if(!playlistsRequete.payload) {
+                setErreurModalShow(true);
+                return
+            }
+
+            setPlaylists(playlistsRequete.payload);
+
+            const userRequete = await dispatch(fetchUser());
+
+            if(!userRequete.payload) {
+                setErreurModalShow(true);
+                return
+            }
+
+            setUser(userRequete.payload);
+        }
+
+        getBasicData();
+  }, [dispatch, updateOnChange]);
+    
+    //Affichage des playlists dans la sidebar
     useEffect(() => {
         let tempSidebarOptions = {...sidebarOptions};
 
-        for (let key of Object.keys(playlists)) {
-            tempSidebarOptions.playlists[key] = '';
+        for (let key of playlists.items) {
+            tempSidebarOptions.playlists[key.id] = '';
         }
         
         setSidebarOptions(tempSidebarOptions);
-    }, [playlists]);
+    }, [playlists, updateOnChange]);
 
+    //Déconnexion
+    function resetAllVariables() {
+        setTitres(null);
+        setArtistes(null);
+        setEcouteRecemment(null);
+        setPlaylist(null);
+        setAccessToken('');
+        setLogin(false);
+        updateSidebar('accueil');
+    }
 
-    //Requete playlists
-    
-
+    /**
+     * Fonction qui permet de changer l'onglet actif dans la sidebar
+     * 
+     * @param  {} newActiveOption
+     * @param  {} optionType=null
+     */
     function updateSidebar(newActiveOption, optionType = null) {
         let tempSidebarOptions = {...sidebarOptions};
-        //Séparé en deux parties pour permettre de nommer une playlist "Titres" par exemple
+        //Séparé en deux parties pour permettre de nommer une playlist "Titres" sans causer de problèmes
         if(optionType === null) {
             for (let key of Object.keys(tempSidebarOptions)) {
                 if(key !== 'playlists') {
@@ -81,95 +142,170 @@ export const MainPage = () => {
         setSidebarOptions(tempSidebarOptions)
     }
 
+    //UseMemo qui affiche un component en fonction de l'onglet actif dans la sidebar
+    //Fais également les requête API nécessaires
     const PageComponent = useMemo(() => {
         if(recherche === '') {
-            if(sidebarOptions.accueil === 'active') {
+            if(sidebarOptions.accueil === 'active') { // ACCUEIL
                 return <Home playlists={playlists} setPlaylists={setPlaylists}/>
-            } else if(sidebarOptions.concuPourVous === 'active') {
-                return <ConcuPourVous/>
-            } else if(sidebarOptions.ecouteRecemment === 'active') {
-                return <EcouteRecemment/>
-            } else if(sidebarOptions.titres === 'active') {
-                return <Titres/>
-            } else if(sidebarOptions.albums === 'active') {
-                return <Albums/>
-            } else if(sidebarOptions.artistes === 'active') {
-                return <Artistes/>
-            } else if(sidebarOptions.artiste === 'active') {
-                return <Artiste/>
-            } else {
+            } else if(sidebarOptions.ecouteRecemment === 'active') { // ECOUTE RECEMMENT
+                const getMyRecentlyPlayed = async() => {
+                    const ecouteRecemmentRequete = await dispatch(fetchMyRecentlyPlayed());
+
+                    if(!ecouteRecemmentRequete.payload) {
+                        setErreurModalShow(true);
+                        return
+                    }
+
+                    setEcouteRecemment(ecouteRecemmentRequete.payload);
+                }
+
+                if(ecouteRecemment) {
+                    return <EcouteRecemment playlists={playlists} dispatch={dispatch} ecouteRecemment={ecouteRecemment} setCurrentTrackUri={setCurrentTrackUri} />
+                } else {
+                    getMyRecentlyPlayed();
+                }
+            } else if(sidebarOptions.titres === 'active') { // TITRES
+                const getMyTopTracks = async() => {
+                    let offset = 0;
+                    const titresRequete = await dispatch(fetchMyTopTracks({offsetNumber: offset}));
+
+                    if(!titresRequete.payload) {
+                        setErreurModalShow(true);
+                        return
+                    }
+
+                    let tempTitres = cloneDeep(titresRequete.payload);
+
+                    while(tempTitres && (tempTitres.items.length < tempTitres.total)) {
+                        offset += 50;
+                        const titresRequete = await dispatch(fetchMyTopTracks({offsetNumber: offset}));
+                        tempTitres.items.push(...titresRequete.payload.items);
+                    }
+                    setTitres(tempTitres);
+                }
+
+                if(titres) {
+                    return <Titres titres={titres} dispatch={dispatch} playlists={playlists} setCurrentTrackUri={setCurrentTrackUri} />
+                } else {
+                    getMyTopTracks();
+                }
+            } else if(sidebarOptions.artistes === 'active') { // ARTISTES
+                const getMyTopArtists = async() => {
+                    let offset = 0;
+                    const artistesRequete = await dispatch(fetchMyTopArtists({offsetNumber: offset}));
+
+                    if(!artistesRequete.payload) {
+                        setErreurModalShow(true);
+                        return
+                    }
+
+                    let tempArtistes = cloneDeep(artistesRequete.payload);
+
+                    while(tempArtistes && (tempArtistes.items.length < tempArtistes.total)) {
+                        offset += 50;
+                        const artistesRequete = await dispatch(fetchMyTopArtists({offsetNumber: offset}));
+                        tempArtistes.items.push(...artistesRequete.payload.items);
+                    }
+                    setArtistes(tempArtistes);
+                }
+
+                if(artistes) {
+                    return <Artistes artistes={artistes}/>
+                } else {
+                    getMyTopArtists();
+                }
+            } else { // PLAYLIST
                 //Check les playlists
                 for (let [key, value] of Object.entries(sidebarOptions.playlists)) {
                     if(value === 'active') {
-                        return <Playlist playlist={playlists[key]}/>
+                        const getPlaylist = async() => {
+                            let offset = 0;
+                            const playlistRequete = await dispatch(fetchPlaylist({playlist: key, offsetNumber: offset}));
+
+                            if(!playlistRequete.payload) {
+                                setErreurModalShow(true);
+                                return
+                            }
+
+                            let tempPlaylist = cloneDeep(playlistRequete.payload);
+
+                            while(tempPlaylist.tracks.items.length < tempPlaylist.tracks.total) {
+                                offset += 100;
+                                const playlistRequete = await dispatch(fetchPlaylistTracks({playlist: key, offsetNumber: offset}));
+                                tempPlaylist.tracks.items.push(...playlistRequete.payload.items);
+                            }
+                            setPlaylist(tempPlaylist);
+                        }
+                    
+                        if(lastFetchedPlaylist !== key) {
+                            getPlaylist();
+                            setLastFetchedPlaylist(key);
+                        }
+
+                        if(playlist) {
+                            return <Playlist playlist={playlist} setCurrentTrackUri={setCurrentTrackUri} dispatch={dispatch} setLastFetchedPlaylist={setLastFetchedPlaylist} setPlaylist={setPlaylist}    />
+                        }
                     }
                 }
             }
-        } else {
-            return <Recherche/>
+        } else { // RECHERCHE
+            const search = async() => {
+                const searchRequete = await dispatch(fetchSearchResults(recherche));
+                console.log(searchRequete.payload);
+                if(!searchRequete.payload) {
+                    setErreurModalShow(true);
+                    return
+                }
+
+                setResultatsRecherche(searchRequete.payload);
+            }
+
+            if(recherche !== lastRecherche) {
+                setResultatsRecherche(null);
+                setLastRecherche(recherche);
+                search();
+            }
+
+            if(resultatsRecherche) {
+                return <Recherche resultatsRecherche={resultatsRecherche} setCurrentTrackUri={setCurrentTrackUri} dispatch={dispatch} playlists={playlists}/>
+            } else {
+                search();
+            }
         }
-    }, [sidebarOptions, recherche, playlists]);
+    }, [sidebarOptions, recherche, resultatsRecherche, playlist, titres, artistes, ecouteRecemment]);
 
-    useEffect(() => {
-        if(recherche !== '') {
-            
-        }
-    }, [recherche]);
-
-    function PlaylistModal(props) {
-        return (
-            <Modal {...props} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
-                <Modal.Header>
-                    <Modal.Title id="contained-modal-title-vcenter">
-                        Création de Playlist
-                    </Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <div className='row justify-content-md-center player-song-icons'>
-                        <div className='col'>
-                            <label htmlFor="playlistTitleInput" className="form-label login-form-label">Titre de la playlist</label>
-                            <div className="input-group mb-3">
-                                <input type="text" maxLength={100} className="form-control" placeholder="Titre de la playlist" id="playlistTitleInput" aria-describedby="basic-addon3"/>
+    //Fonction qui affiche l'application
+    const DisplayApp = () => {
+        if(user && user.product && user.product === "premium") {
+            return (
+                <main className='unselectable' style={{height: window.screen.height}}>
+                    <Sidebar dispatch={dispatch} user={user} setErreurModalShow={setErreurModalShow} updateOnChange={updateOnChange} setUpdateOnChange={setUpdateOnChange} sidebarOptions={sidebarOptions} updateSidebar={updateSidebar} playlists={playlists} setPlaylistModalShow={setPlaylistModalShow} resetAllVariables={resetAllVariables} />
+                    <div className="music-page text-white bg-dark bg-gradient">
+                        <div className="normalAlignement">
+                            <div className="searchBar">
+                                <div className="ui left icon input right action">
+                                    <i className="search icon"></i>
+                                    <input id='inputRecherche' onChange={(e) => {setRecherche(e.target.value)}} type="text" placeholder="Rechercher..." autoComplete='off' />
+                                    <button className="ui icon button" onClick={() => {document.getElementById('inputRecherche').value = ''; setRecherche('')}}><i className="close icon"/></button>
+                                </div>
                             </div>
-
-                            <label htmlFor="playlistDescriptionInput" className="form-label login-form-label">Description</label>
-                            <div className="input-group mb-3">
-                                <textarea className="form-control creaPlaylist-txtarea" maxLength={300} rows='5' id="playlistDescriptionInput" placeholder="Description"></textarea>
-                            </div>
+                            {PageComponent}
                         </div>
                     </div>
-                </Modal.Body>
-                <Modal.Footer>
-                    <div className='divBtn'>
-                        <button type="button" className="cancel-btn btn" onClick={props.onHide}>Annuler</button>
-
-                        <button type="button" className="green-button-big btn" onClick={() => {
-                            //Requete api pour créer la playlist
-                            updateSidebar(document.getElementById('playlistTitleInput').value)
-                        }}>Créer</button>
+                    <div className='player'>
+                        <Player trackUri={currentTrackUri}  accessTokenDirect={accessTokenDirect} />
                     </div>
-                </Modal.Footer>
-            </Modal>
-        );
+                    <PlaylistModal props={{show: playlistModalShow, onHide: () => {setPlaylistModalShow(false)}}} dispatch={dispatch} user={user} setUpdateOnChange={setUpdateOnChange}  updateOnChange={updateOnChange} />
+                    <ErreurModal props={{show: erreurModalShow, onHide: () => {setErreurModalShow(false)}}} />
+                </main>
+            );
+        } else {
+            return <NoPremium resetAllVariables={resetAllVariables} />
+        }
     }
 
     return (
-        <main className='unselectable' style={{height: window.screen.height}}>
-            <Sidebar sidebarOptions={sidebarOptions} updateSidebar={updateSidebar} playlists={playlists} setModalShow={setModalShow} />
-            <div className="music-page text-white bg-dark bg-gradient">
-                <div className="normalAlignement">
-                    <div className="searchBar">
-                        <div className="ui left icon input right action">
-                            <i className="search icon"></i>
-                            <input id='inputRecherche' onChange={(e) => {setRecherche(e.target.value)}} type="text" placeholder="Rechercher..." />
-                            <button className="ui icon button" onClick={() => {document.getElementById('inputRecherche').value = ''; setRecherche('')}}><i className="close icon"/></button>
-                        </div>
-                    </div>
-                    {PageComponent}
-                </div>
-            </div>
-            <Player />
-            <PlaylistModal show={modalShow} onHide={() => {setModalShow(false)}} />
-        </main>
+        DisplayApp()
     );
 }
