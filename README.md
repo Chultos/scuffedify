@@ -1,10 +1,13 @@
 # Scuffedify
 
 Application web qui permet d'utiliser certaines fonctionnalités de Spotify sur un navigateur
+https://scuffedify.vercel.app/
+
 
 ## Projet
 
 Cette application est née grâce à un projet d'école.
+This application was a school project
 
 ### `npm start`
 
