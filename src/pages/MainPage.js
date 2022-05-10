@@ -72,7 +72,7 @@ export const MainPage = ({setLogin, accessTokenDirect}) => {
                 return
             }
 
-            if(userRequete.payload.images === []) {
+            if(userRequete.payload.images.length === 0) {
                 //Si l'utilisateur n'a pas d'image de profil, on affiche une image par défaut
                 let userClone = cloneDeep(userRequete.payload);
                 userClone.images = [{url: './images/default_profile_image.png'}];
@@ -85,6 +85,10 @@ export const MainPage = ({setLogin, accessTokenDirect}) => {
 
         getBasicData();
   }, [dispatch, updateOnChange]);
+
+  useEffect(() => {
+        console.log(user);
+    }, [user]);
     
     //Affichage des playlists dans la sidebar
     useEffect(() => {
