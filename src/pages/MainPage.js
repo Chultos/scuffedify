@@ -72,7 +72,15 @@ export const MainPage = ({setLogin, accessTokenDirect}) => {
                 return
             }
 
-            setUser(userRequete.payload);
+            if(userRequete.payload.images === []) {
+                //Si l'utilisateur n'a pas d'image de profil, on affiche une image par défaut
+                let userClone = cloneDeep(userRequete.payload);
+                userClone.images = [{url: './images/default_profile_image.png'}];
+
+                setUser(userClone);
+            } else {
+                setUser(userRequete.payload);
+            }
         }
 
         getBasicData();

@@ -8,7 +8,7 @@ export const Home = () => {
         <>
             <div className="noSection">
                 <div className="accueil">
-                    <i class="fa fa-music" aria-hidden="true"></i>
+                    <i className="fa fa-music" aria-hidden="true"></i>
                     <h1>Scuffedify</h1>
                     <p>La meilleure application pour écouter votre musique préférée</p>
                 </div>
