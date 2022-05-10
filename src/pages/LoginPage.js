@@ -10,11 +10,13 @@ export const LoginPage = ({credentials}) => {
     let redirect_uri = 'https://scuffedify.vercel.app/';
     let scopes = [
         'user-read-private',
-        'user-read-currently-playing',
-        'user-read-recently-played',
-        'user-read-playback-state',
+        'user-read-email',
         'user-top-read',
+        'user-read-recently-played',
+        'user-read-currently-playing',
+        'user-read-playback-state',
         'user-modify-playback-state',
+        'streaming',
         'playlist-modify-public'
     ]
 
