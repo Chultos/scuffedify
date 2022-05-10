@@ -9,6 +9,7 @@ export const LoginPage = ({credentials}) => {
     let endpoint = 'https://accounts.spotify.com/authorize';
     let redirect_uri = 'https://scuffedify.vercel.app/'
     let scopes = [
+        'user-read-private',
         'user-read-currently-playing',
         'user-read-recently-played',
         'user-read-playback-state',
